@@ -1,0 +1,5 @@
+[SubPathautoUnitTestCase]
+name = Sub-pathauto unit tests
+description = Test basic functionality for Sub-pathauto.
+group = Sub-pathauto
+file = subpathauto.test

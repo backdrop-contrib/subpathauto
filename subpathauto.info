@@ -1,5 +1,5 @@
-name = Sub-pathauto
+type = module
+name = Sub-path Auto
 description = Provides support for extending sub-paths of URL aliases.
-core = 7.x
-configure = admin/config/search/path/subpaths
-files[] = subpathauto.test
+backdrop = 1.x
+configure = admin/config/urls/subpaths
