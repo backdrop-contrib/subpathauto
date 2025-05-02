@@ -1,10 +1,13 @@
 <?php
-
 /**
  * @file
  * Test integration for the subpathauto.module.
  */
 
+/**
+ * @group subpathauto
+ * @group path
+ */
 class SubPathautoUnitTestCase extends BackdropWebTestCase {
   function setUp() {
     parent::setUp(array('subpathauto'));
@@ -14,6 +17,9 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
     $this->addAlias('admin', 'malicious-path');
   }
 
+  /**
+   * Test that sub-path aliases are created and returned correctly.
+   */
   function testSubPathAliases() {
     $this->assertAlias('node/1', 'content/first-node');
     $this->assertAlias('node/1/a', 'content/first-node/a');
@@ -40,9 +46,13 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
 
     // Test with $options['alias'] and $options['external'].
     $this->assertNoAlias('node/1/a', array('alias' => TRUE));
-    $this->assertAlias('node/1/a', 'content/first-node/a', array('alias' => FALSE));
+    $this->assertAlias('node/1/a', 'content/first-node/a', array(
+      'alias' => FALSE,
+    ));
     $this->assertNoAlias('node/1/a', array('external' => TRUE));
-    $this->assertAlias('node/1/a', 'content/first-node/a', array('external' => FALSE));
+    $this->assertAlias('node/1/a', 'content/first-node/a', array(
+      'external' => FALSE,
+    ));
 
     // Enable sub-path aliases for admin paths.
     config_set('subpathauto.settings', 'ignore_admin', 0);
@@ -51,6 +61,10 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
     $this->assertAlias('admin/modules', 'malicious-path/modules');
   }
 
+  /**
+   * Test that sub-path aliases are created and returned correctly for
+   * language-specific paths.
+   */
   function getPathAlias($path, $options = array()) {
     // Merge in defaults.
     $options += array(
@@ -63,10 +77,10 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
 
     if (!isset($options['external'])) {
       // Return an external link if $path contains an allowed absolute URL. Only
-      // call the slow backdrop_strip_dangerous_protocols() if $path contains a ':'
-      // before any / ? or #. Note: we could use url_is_external($path) here, but
-      // that would require another function call, and performance inside url() is
-      // critical.
+      // call the slow backdrop_strip_dangerous_protocols() if $path contains a
+      // ':' before any / ? or #. Note: we could use url_is_external($path)
+      // here, but that would require another function call, and performance
+      // inside url() is critical.
       $colonpos = strpos($path, ':');
       $options['external'] = ($colonpos !== FALSE && !preg_match('![/?#]!', substr($path, 0, $colonpos)) && backdrop_strip_dangerous_protocols($path) == $path);
     }
@@ -102,6 +116,19 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
     return $path;
   }
 
+  /**
+   * Assert that the given source path has the expected alias.
+   *
+   * @param string $source
+   *   The source path.
+   * @param string $alias
+   *   The expected alias.
+   * @param array $options
+   *   An array of options to pass to backdrop_get_path_alias().
+   *
+   * @return bool
+   *   TRUE if the alias matches, FALSE otherwise.
+   */
   function assertAlias($source, $alias, array $options = array()) {
     $actual_alias = $this->getPathAlias($source, $options);
     $actual_source = backdrop_get_normal_path($alias);
@@ -115,10 +142,31 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
         || $this->assertIdentical($source, $actual_source, t("backdrop_get_normal_path('@alias') was '@source-actual' and expected '@source'", $args));
   }
 
+  /**
+   * Assert that the given source path has no alias.
+   *
+   * @param string $source
+   *   The source path.
+   * @param array $options
+   *   An array of options to pass to backdrop_get_path_alias().
+   *
+   * @return bool
+   *   TRUE if the alias matches, FALSE otherwise.
+   */
   function assertNoAlias($source, array $options = array()) {
     return $this->assertAlias($source, $source, $options);
   }
 
+  /**
+   * Add an alias to the path system.
+   *
+   * @param string $source
+   *   The source path.
+   * @param string $alias
+   *   The alias path.
+   * @param string $langcode
+   *   The language code for the alias.
+   */
   function addAlias($source, $alias, $langcode = LANGUAGE_NONE) {
     $alias = array(
       'source' => $source,
