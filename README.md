@@ -17,12 +17,13 @@ possible to get rid of all remaining exposed internal non-administrative URLs.
 
 ## Issues
 
-    - While Sub-pathauto works when `backdrop_get_normal_path()` is called, if
-      `backdrop_get_path_alias()` is called, the hook to alter URLs is not
-      invoked. Functionality that uses this function to compare things like page
-      visibility settings will not match the sub-path processed URL. This is due
-      to [a core bug](https://github.com/backdrop/backdrop-issues/issues/1419).
-    - Bugs and Feature requests should be reported in the [Issue Queue](https://github.com/backdrop-contrib/subpathauto/issues)
+- While Sub-pathauto works when `backdrop_get_normal_path()` is called, if
+  `backdrop_get_path_alias()` is called, the hook to alter URLs is not
+  invoked. Functionality that uses this function to compare things like page
+  visibility settings will not match the sub-path processed URL. This is due
+  to [a core bug](https://github.com/backdrop/backdrop-issues/issues/1419).
+- Bugs and Feature requests should be reported in the
+  [Issue Queue](https://github.com/backdrop-contrib/subpathauto/issues).
 
 ## Current Maintainers
 
