@@ -9,7 +9,11 @@
  * @group path
  */
 class SubPathautoUnitTestCase extends BackdropWebTestCase {
-  function setUp() {
+
+  /**
+   * Overrides BackdropWebTestCase::setUp().
+   */
+  public function setUp() {
     parent::setUp(array('subpathauto'));
 
     $this->addAlias('node/1', 'content/first-node');
@@ -20,7 +24,7 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
   /**
    * Test that sub-path aliases are created and returned correctly.
    */
-  function testSubPathAliases() {
+  public function testSubPathAliases() {
     $this->assertAlias('node/1', 'content/first-node');
     $this->assertAlias('node/1/a', 'content/first-node/a');
     $this->assertNoAlias('node/1/a/b');
@@ -65,7 +69,7 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
    * Test that sub-path aliases are created and returned correctly for
    * language-specific paths.
    */
-  function getPathAlias($path, $options = array()) {
+  public function getPathAlias($path, $options = array()) {
     // Merge in defaults.
     $options += array(
       'fragment' => '',
@@ -129,7 +133,7 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
    * @return bool
    *   TRUE if the alias matches, FALSE otherwise.
    */
-  function assertAlias($source, $alias, array $options = array()) {
+  public function assertAlias($source, $alias, array $options = array()) {
     $actual_alias = $this->getPathAlias($source, $options);
     $actual_source = backdrop_get_normal_path($alias);
     $args = array(
@@ -153,7 +157,7 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
    * @return bool
    *   TRUE if the alias matches, FALSE otherwise.
    */
-  function assertNoAlias($source, array $options = array()) {
+  public function assertNoAlias($source, array $options = array()) {
     return $this->assertAlias($source, $source, $options);
   }
 
@@ -167,7 +171,7 @@ class SubPathautoUnitTestCase extends BackdropWebTestCase {
    * @param string $langcode
    *   The language code for the alias.
    */
-  function addAlias($source, $alias, $langcode = LANGUAGE_NONE) {
+  public function addAlias($source, $alias, $langcode = LANGUAGE_NONE) {
     $alias = array(
       'source' => $source,
       'alias' => $alias,
