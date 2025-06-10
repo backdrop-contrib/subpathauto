@@ -21,6 +21,17 @@ function subpathauto_menu() {
 }
 
 /**
+ * Implements hook_config_info().
+ */
+function subpathauto_config_info() {
+  $prefixes['subpathauto.settings'] = array(
+    'label' => t('Subpathauto settings'),
+    'group' => 'Configuration',
+  );
+  return $prefixes;
+}
+
+/**
  * Implements hook_url_inbound_alter().
  */
 function subpathauto_url_inbound_alter(&$path, $original_path, $language) {
